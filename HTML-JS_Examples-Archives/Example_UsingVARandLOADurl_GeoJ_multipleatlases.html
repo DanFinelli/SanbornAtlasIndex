@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Load GeoJSON from a URL</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
+<style>
+  body { margin:0; padding:0; }
+  #map { position:absolute; top:0; bottom:0; width:100%; }
+</style>
+</head>
+<body>
+<div id='map'></div>
+
+<script>
+L.mapbox.accessToken = 'pk.eyJ1IjoiZXZhbnRob3JuYmVycnkiLCJhIjoiemVQMDBUdyJ9.aK0EfwMvPgquXMmxLf73lw';
+
+var tiles = L.tileLayer('http://b.tile.stamen.com/toner-lite/{z}/{x}/{y}.png', {  
+    	transparency: true,
+    	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.'}
+    	 	);
+    // Here is where we define our map variable, and to set any spatial and zoom-level limits
+var map = L.map('map', {
+	      maxZoom: 19,
+        minZoom: 12,
+        maxBounds: [
+    	[42.13082, -71.26556],
+    	[42.54094, -70.79041]
+    	]
+        })
+    .addLayer(tiles)
+    //Here is where you will want to set the starting location of the map
+    .setView([42.35747, -71.05957], 14)
+    .addControl(L.mapbox.geocoderControl('mapbox.places-v1',
+    	{
+        autocomplete: true,
+      }));
+
+// As with any other AJAX request, this technique is subject to the Same Origin Policy:
+// http://en.wikipedia.org/wiki/Same_origin_policy
+// So the CSV file must be on the same domain as the Javascript, or the server
+// delivering it should support CORS.
+var vol3 = L.mapbox.featureLayer()
+    .loadURL('https://raw.githubusercontent.com/DanFinelli/SanbornAtlasIndex/master/sanvol31884sb.geojson')
+    .addTo(map);
+ var vol1 = L.mapbox.featureLayer()
+    .loadURL('https://raw.githubusercontent.com/DanFinelli/SanbornAtlasIndex/master/sanvol11882bos.geojson')
+    .addTo(map); 
+  var vol2 = L.mapbox.featureLayer()
+    .loadURL('https://raw.githubusercontent.com/DanFinelli/SanbornAtlasIndex/master/sanvol21885rox.geojson')
+    .addTo(map);
+  var vol4 = L.mapbox.featureLayer()
+    .loadURL('https://raw.githubusercontent.com/DanFinelli/SanbornAtlasIndex/master/sanvol41884ch.geojson')
+    .addTo(map);
+  var vol1 = L.mapbox.featureLayer()
+    .loadURL('https://raw.githubusercontent.com/ect123/boston-atlas-footprints/master/index/index-sanborn-1867-bostonvol1.geojson')
+    .addTo(map);
+  var vol1 = L.mapbox.featureLayer()
+    .loadURL('https://raw.githubusercontent.com/ect123/boston-atlas-footprints/master/index/index-sanborn-1868-bostonvol2.geojson')
+    .addTo(map);
+  var vol1 = L.mapbox.featureLayer()
+    .loadURL('https://raw.githubusercontent.com/ect123/boston-atlas-footprints/master/index/index-sanborn-1868-roxburycharlestowncambridge.geojson')
+    .addTo(map);
+
+
+</script>
+</body>
+</html>
